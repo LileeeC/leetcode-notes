@@ -44,6 +44,7 @@
 
   完成單組交換並推進 curr (curr = curr->next->next)：
   [dummy] ---> [2] ---> [1 (curr)] ---> [3] ---> [4] ---> NULL
+  ```
 
   * **執行順序拆解**[cite: 1]：
   1. **步驟一**：`curr->next = tmp1->next;`（讓 `curr` 跨過 `1`，直接指向 `2`）[cite: 1]。
@@ -63,3 +64,41 @@
 * **`while` 迴圈判斷條件順序不可顛倒**：必須寫成 `curr->next != nullptr && curr->next->next != nullptr`。利用 `&&` 的短路求值特性，先確保第一個節點存在，才能安全檢查第二個節點，否則在偶數個節點走完最後一組時會觸發空指標崩潰（Null Pointer Dereference）。
 * **暫存指標的必要性**：步驟一覆寫 `curr->next` 後，原本通往節點 `1` 的路就斷了；步驟二覆寫 `2->next` 後，通往節點 `3` 的路也斷了。因此 `tmp1` 與 `tmp2` 缺一不可。
 * **記憶體管理細節**：動態配置 `new ListNode(0)` 作為 `dummy` 後，回傳前先用 `head = dummy->next` 取出新頭節點，並執行 `delete dummy` 避免記憶體洩漏（或直接在 Stack 宣告 `ListNode dummy(0, head)` 省去手動釋放）。
+
+---
+## 5. 程式碼實作 (C++)
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        ListNode* curr = dummy;
+        ListNode* tmp1;
+        ListNode* tmp2;
+        if(curr == nullptr || curr->next == nullptr) return head;
+        while(curr->next != nullptr && curr->next->next != nullptr){
+            tmp1 = curr->next;
+            tmp2 = curr->next->next->next;
+            curr->next = tmp1->next;
+            curr->next->next = tmp1;
+            tmp1->next = tmp2;
+            curr = curr->next->next;
+        }
+        head = dummy->next;
+        delete dummy;
+        return head;
+    }
+};
+```

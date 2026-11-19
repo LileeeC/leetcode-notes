@@ -68,3 +68,147 @@
   - 單向插入時，務必先執行 `newnode->next = curr->next;`，再執行 `curr->next = newnode;`，否則後方串列會斷鏈遺失。
   - 雙向插入時，務必先接好 `newnode` 的 `next` 與 `prev`（或先用 `tmp` 暫存 `curr->next`），再覆寫 `curr->next`。
 * **C++ 記憶體釋放習慣**：刪除節點時，先用 `todelete` 暫存目標指標，調整好前後連結後執行 `delete todelete; todelete = nullptr;`，避免記憶體洩漏與懸空指標（Dangling Pointer）。
+
+---
+
+## 5. 程式碼實作 (C++)
+
+```cpp
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * MyLinkedList* obj = new MyLinkedList();
+ * int param_1 = obj->get(index);
+ * obj->addAtHead(val);
+ * obj->addAtTail(val);
+ * obj->addAtIndex(index,val);
+ * obj->deleteAtIndex(index);
+ */
+
+class MyLinkedList1 {
+private:
+    struct ListNode{
+        int val;
+        ListNode* next;
+        ListNode(int x): val(x), next(nullptr){}
+    };
+
+    ListNode* dummyhead;
+    int size;
+public:
+    MyLinkedList() {
+        dummyhead = new ListNode(0);
+        size = 0;
+    }
+    
+    int get(int index) {
+        if(index > (size-1) || index < 0) return -1;
+        ListNode* curr = dummyhead;
+        for(int i = 0; i <= index; i++){
+            curr = curr->next;
+        }
+        return curr->val;
+    }
+
+    void addAtHead(int val) {
+        addAtIndex(0, val);
+    }
+    
+    void addAtTail(int val) {
+        addAtIndex(size, val);
+    }
+    
+    void addAtIndex(int index, int val) {
+        if(index > size || index < 0) return;
+        ListNode* curr = dummyhead;
+        for(int i = 0; i < index; i++){
+            curr = curr->next;
+        }
+        ListNode* newnode = new ListNode(val);
+        newnode->next = curr->next;
+        curr->next = newnode;
+        size++;
+    }
+    
+    void deleteAtIndex(int index) {
+        if(index >= size || index < 0) return;
+        ListNode* curr = dummyhead;
+        for(int i = 0; i < index; i++){
+            curr = curr->next;
+        }
+        ListNode* todelete = curr->next;
+        curr->next = curr->next->next;
+        delete todelete;
+        todelete = nullptr;
+        size--;
+    }
+};
+
+class MyLinkedList2_doubly {
+private:
+    struct ListNode{
+        int val;
+        ListNode* next;
+        ListNode* prev;
+        ListNode(int x): val(x), next(nullptr), prev(nullptr){}
+        ListNode(int x, ListNode* next, ListNode* prev): val(x), next(next), prev(prev){}
+    };
+
+    ListNode* dummyhead;
+    ListNode* dummytail;
+    int size;
+public:
+    MyLinkedList() {
+        dummyhead = new ListNode(0);
+        dummytail = new ListNode(0, nullptr, dummyhead);
+        dummyhead->next = dummytail;
+        dummyhead->prev = nullptr;
+        size = 0;
+    }
+    
+    int get(int index) {
+        if(index > (size-1) || index < 0) return -1;
+        ListNode* curr = dummyhead;
+        for(int i = 0; i <= index; i++){
+            curr = curr->next;
+        }
+        return curr->val;
+    }
+
+    void addAtHead(int val) {
+        addAtIndex(0, val);
+    }
+    
+    void addAtTail(int val) {
+        addAtIndex(size, val);
+    }
+    
+    void addAtIndex(int index, int val) {
+        if(index > size || index < 0) return;
+        ListNode* curr = dummyhead;
+        for(int i = 0; i < index; i++){
+            curr = curr->next;
+        }
+        ListNode* tmp = curr->next;
+        ListNode* newnode = new ListNode(val);
+        newnode->next = curr->next;
+        newnode->prev = curr;
+        curr->next = newnode;
+        tmp->prev = newnode;
+        size++;
+    }
+    
+    void deleteAtIndex(int index) {
+        if(index >= size || index < 0) return;
+        ListNode* curr = dummyhead;
+        for(int i = 0; i < index; i++){
+            curr = curr->next;
+        }
+        ListNode* todelete = curr->next;
+        curr->next = curr->next->next;
+        curr->next->prev = curr;
+        delete todelete;
+        todelete = nullptr;
+        size--;
+    }
+};
+ ```

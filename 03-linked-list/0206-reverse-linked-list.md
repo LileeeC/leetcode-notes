@@ -67,3 +67,65 @@
 * **迭代法 `tmp` 更新時機陷阱（TLE 死循環原因）**：`tmp = curr->next` 必須放在 `while (curr != nullptr)` 迴圈內部最開頭無條件執行；若放在迴圈尾端並加上 `if (curr->next != nullptr)` 判斷，當 `curr` 走到最後一個節點時 `tmp` 會停止更新並繼續指著自己，導致下一輪 `curr = tmp` 陷入無窮迴圈（TLE）。此外，在迴圈外預先執行 `tmp = curr->next` 也會在空串列（`head == nullptr`）時觸發空指標崩潰。
 * **遞迴法必須執行 `head->next = nullptr`**：若只寫 `head->next->next = head` 而忘記斷開原本的 `head->next`，當退回最外層（節點 `1`）時，節點 `1` 與節點 `2` 會互相指向對方形成環狀死循環。
 * **工程與面試選擇**：迭代法空間複雜度為 $O(1)$ 且無 Stack Overflow 風險，為實務首選；遞迴法則是後續練習「反轉部分鏈結串列（LC 92）」與「K 個一組反轉（LC 25）」的重要思維基礎。
+
+---
+## 5. 程式碼實作 (C++)
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution_iteration {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* prev = nullptr;
+        ListNode* curr = head;
+        ListNode* tmp;
+        
+
+        while(curr != nullptr){
+            tmp = curr->next;
+            head = curr;
+            curr->next = prev;
+            prev = curr;
+            curr = tmp;
+        }
+
+        return head;
+    }
+};
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution_recursion {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head == nullptr || head->next == nullptr){
+            return head;
+        }
+        // 遞迴反轉 head 後方的所有節點，並接住整條串列的新頭節點
+        ListNode* newhead = reverseList(head->next);
+        // 反轉當前節點與下一個節點的指標方向
+        head->next->next = head;
+        head->next = nullptr; // 必須置空，否則原本的第一個節點會與第二個節點形成死循環
+
+        // 將新頭節點一路往上層回傳
+        return newhead;
+    }
+};
+```

@@ -46,4 +46,42 @@
   - **方式 A（`fast` 先走 $n$ 步，停止條件 `fast->next != nullptr`）**：結束時 `fast` 停在最後一個真實節點，`slow` 停在倒數第 $n + 1$ 個節點（目標前驅）。
   - **方式 B（`fast` 先走 $n + 1$ 步，停止條件 `fast != nullptr`）**：結束時 `fast` 走出串列停在 `nullptr`，`slow` 同樣停在倒數第 $n + 1$ 個節點。兩種寫法只要**先走的步數與迴圈終止條件成對匹配**即可。
 * **統一刪除操作無需特判尾節點**：只要 `slow` 精準停在目標節點的前一個位置，無論刪除的是頭節點、中間節點還是最後一個節點（`n == 1`），一律只需執行 `slow->next = slow->next->next` 即可（當刪除尾節點時，`slow->next->next` 本身即為 `nullptr`）。
-* **虛擬頭節點的必要性**：題目允許 `n == sz`（刪除 `head` 本身），若沒有 `dummy` 節點，將無法讓 `slow` 停在 `head` 的前一個位置，必須額外撰寫特殊判斷處理。ㄋ
+* **虛擬頭節點的必要性**：題目允許 `n == sz`（刪除 `head` 本身），若沒有 `dummy` 節點，將無法讓 `slow` 停在 `head` 的前一個位置，必須額外撰寫特殊判斷處理。
+
+---
+## 5. 程式碼實作 (C++)
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        ListNode* tmp = dummy;
+        ListNode* curr = dummy;
+        for(int i = 0; i < n; i++) tmp = tmp->next;
+        while(tmp->next != nullptr){
+            curr = curr->next; 
+            tmp = tmp->next;
+        }
+        ListNode* todelete = curr->next;
+        curr->next = curr->next->next;
+
+        head = dummy->next;
+        delete todelete;
+        delete dummy;
+        
+        return head;
+    }
+};
+```

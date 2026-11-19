@@ -47,3 +47,60 @@
 * **刪除節點後 `curr` 不可移動**：當 `curr->next` 被刪除並接上 `curr->next->next` 後，新接過來的節點尚未被檢查過，因此**只有在 `else`（未發生刪除）時才能執行 `curr = curr->next`**，否則會漏刪連續重複的目標值（如 `[1, 2, 2, 3]` 刪 `2`）。
 * **Stack 宣告 `dummy` 的語法細節**：`ListNode dummy(0, head);` 是在 Stack 建立實體物件並呼叫建構子，因此取得位址需用 `&dummy`，回傳新頭節點時需用點號 `dummy.next`（而非指標的 `->`）。
 * **C++ 記憶體管理習慣**：被移除的串列節點是系統透過 `new` 配置在 Heap 上的，刪除連結後順手執行 `delete toDelete` 可避免記憶體洩漏（Memory Leak）。
+
+---
+## 5. 程式碼實作 (C++)
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution1 {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        ListNode* dum = new ListNode(0, head);
+        ListNode* curr = dum;
+
+        while(curr->next != nullptr){
+            if(curr->next->val == val){
+                ListNode* toDelete = curr->next;
+                curr->next = curr->next->next;
+                delete toDelete;
+            }else{
+                curr = curr->next;
+            }
+        }
+
+        ListNode* newhead = dum->next;
+        delete dum;
+        return newhead;
+    }
+};
+
+class Solution2 {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        // 直接在 Stack 建立區域變數，函式結束會自動回收，不需手動 delete dummy
+        ListNode dummy(0, head);
+        ListNode* curr = &dummy;
+
+        while(curr->next != nullptr){
+            if(curr->next->val == val){
+                ListNode* toDelete = curr->next;
+                curr->next = curr->next->next;
+                delete toDelete;
+            }else{
+                curr = curr->next;
+            }
+        }
+        return dummy.next;
+    }
+};
+```

@@ -45,3 +45,37 @@
 ## 4. 易錯點與盲點總結 (Key Takeaways)
 * **「反向填充」取代「正向合併」**：若先用二分搜尋找 `0` 的分界點，再從中間向兩邊擴散由小到大填值，需要額外處理「其中一邊指標先走完」的邊界判斷；改用首尾雙指標**由大到小從尾巴往前填**，邏輯大幅簡化且無需特判邊界。
 * **迴圈終止條件**：`while (left <= right)` 必須包含等號（`<=`），確保當最後剩下一個元素（`left == right`）時，該元素仍會被寫入 `result[0]`。
+
+---
+
+## 5. 程式碼實作 (C++)
+
+```cpp
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> result(n); // 預先配置等長結果陣列
+        
+        int left = 0;
+        int right = n - 1;
+        int pos = n - 1; // 從結果陣列的尾端開始由大到小填入
+
+        while (left <= right) {
+            int leftSq = nums[left] * nums[left];
+            int rightSq = nums[right] * nums[right];
+
+            if (leftSq > rightSq) {
+                result[pos] = leftSq;
+                left++;
+            } else {
+                result[pos] = rightSq;
+                right--;
+            }
+            pos--;
+        }
+
+        return result;
+    }
+};
+```

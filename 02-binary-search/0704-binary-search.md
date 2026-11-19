@@ -37,3 +37,40 @@
 * **二分搜尋前提**：題目必須確保數列「已排序」。
 * **防溢位寫法**：計算中間索引時務必採用 `left + (right - left) / 2` 避免 `INT_MAX` 溢位。
 * **邊界終止條件**：`while (left <= right)` 確保當搜尋範圍只剩一個元素時（`left == right`），該元素仍會被檢查。
+
+---
+
+## 5. 程式碼實作 (C++)
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int left = 0;
+        int right = nums.size() - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) return mid;
+            if (nums[mid] < target) left = mid + 1;
+            else right = mid - 1;
+        }
+        return -1;
+    }
+};
+
+int main() {
+    Solution sol;
+    vector<int> nums = {-1, 0, 3, 5, 9, 12};
+    int target = 9;
+
+    int ans = sol.search(nums, target);
+    cout << "Index: " << ans << endl; 
+
+    return 0;
+}
+```
