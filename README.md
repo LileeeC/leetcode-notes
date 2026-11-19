@@ -30,3 +30,4 @@
 - [1002. 查找共用字元 (Find Common Characters)](./hash-table/1002-find-common-char.md)
 - [349. 兩個陣列的交集 (Intersection of Two Arrays)](./hash-table/0349-intersection-of-two-arrays.md)
 - [202. 快樂數 (Happy Number)](./hash-table/0202-happy-number.md)
+- [1. 兩數之和 (Two Sum)](./hash-table/0001-two-sum.md)

@@ -21,3 +21,4 @@
   - [1002. Find Common Characters](hash-table/1002-find-common-char.md)
   - [349. Intersection of Two Arrays](hash-table/0349-intersection-of-two-arrays.md)
   - [202. Happy Number](hash-table/0202-happy-number.md)
+  - [1. Two Sum](hash-table/0001-two-sum.md)
