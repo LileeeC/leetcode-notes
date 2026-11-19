@@ -27,5 +27,6 @@
 
 ### Hash Table（雜湊表）
 - [242. 有效的字母異位詞 (Valid Anagram)](./hash-table/0242-valid-anagram.md)
-- [1002. 查找共用字元 (Find Common Characters)](./hash-table/1002-find-common-characters.md)
+- [1002. 查找共用字元 (Find Common Characters)](./hash-table/1002-find-common-char.md)
 - [349. 兩個陣列的交集 (Intersection of Two Arrays)](./hash-table/0349-intersection-of-two-arrays.md)
+- [202. 快樂數 (Happy Number)](./hash-table/0202-happy-number.md)
