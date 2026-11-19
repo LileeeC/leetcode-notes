@@ -16,7 +16,7 @@
   - [19. Remove Nth Node From End of List](03-linked-list/0019-remove-nth-node-from-end-of-list.md)
   - [142. Linked List Cycle II](03-linked-list/0142-linked-list-cycle-ii.md)
 
-  - **Hash Table**
+- **Hash Table**
   - [242. Valid Anagram](04-hash-table/0242-valid-anagram.md)
   - [1002. Find Common Characters](04-hash-table/1002-find-common-char.md)
   - [349. Intersection of Two Arrays](04-hash-table/0349-intersection-of-two-arrays.md)
