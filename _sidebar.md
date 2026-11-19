@@ -15,3 +15,8 @@
   - [24. Swap Nodes in Pairs](linked-list/0024-swap-nodes.md)
   - [19. Remove Nth Node From End of List](linked-list/0019-remove-nth-node-from-end-of-list.md)
   - [142. Linked List Cycle II](linked-list/0142-linked-list-cycle-ii.md)
+
+  - **Hash Table**
+  - [242. Valid Anagram](hash-table/0242-valid-anagram.md)
+  - [1002. Find Common Characters](hash-table/1002-find-common-characters.md)
+  - [349. Intersection of Two Arrays](hash-table/0349-intersection-of-two-arrays.md)

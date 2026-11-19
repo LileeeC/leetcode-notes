@@ -24,3 +24,8 @@
 - [24. 兩兩交換鏈結串列中的節點 (Swap Nodes in Pairs)](./linked-list/0024-swap-nodes.md)
 - [19. 刪除鏈結串列的倒數第 N 個節點 (Remove Nth Node From End of List)](./linked-list/0019-remove-nth-node-from-end-of-list.md)
 - [142. 環形鏈結串列 II (Linked List Cycle II)](./linked-list/0142-linked-list-cycle-ii.md)
+
+### Hash Table（雜湊表）
+- [242. 有效的字母異位詞 (Valid Anagram)](./hash-table/0242-valid-anagram.md)
+- [1002. 查找共用字元 (Find Common Characters)](./hash-table/1002-find-common-characters.md)
+- [349. 兩個陣列的交集 (Intersection of Two Arrays)](./hash-table/0349-intersection-of-two-arrays.md)
