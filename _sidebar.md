@@ -22,3 +22,5 @@
   - [349. Intersection of Two Arrays](04-hash-table/0349-intersection-of-two-arrays.md)
   - [202. Happy Number](04-hash-table/0202-happy-number.md)
   - [1. Two Sum](04-hash-table/0001-two-sum.md)
+  - [454. 4Sum II](04-hash-table/0454-four-sum-ii.md)
+  - [383. Ransom Note](04-hash-table/0383-ransom-note.md)
