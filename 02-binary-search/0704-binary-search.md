@@ -10,7 +10,7 @@
 ## 1. 題目理解與邊界條件 (Input / Output / Constraints)
 * **輸入限制**：輸入為已排序（升冪）的整數陣列 `nums` 與目標值 `target`。
 * **前提條件**：**僅適用於已排序數列**。若陣列未排序，無法依據與 `mid` 的比較結果排除半數範圍。
-* **特殊狀況 (Edge Cases)**：
+* **特殊狀況 (Edge Cases)** ：
   - 陣列長度為 1。
   - 目標值不在陣列中（回傳 `-1`）。
   - `left` 與 `right` 相加時可能導致整數溢位（Overflow）。
@@ -21,8 +21,8 @@
 
 ### 🟢 最佳化解法 (Binary Search)
 * **核心邏輯**：設定 `left`、`right` 與 `mid` 指標，每一次比較 `nums[mid]` 與 `target` 的大小，都能直接篩掉一半的搜尋範圍，將時間複雜度降至 $O(\log N)$。
-* **關鍵突破口 (防溢位寫法)**：
-  - 傳統寫法 `int mid = (left + right) / 2;` 在 `left + right` 超過 `INT_MAX` 時會導致**整數溢位 (Overflow)**。
+* **關鍵突破口 (防溢位寫法)** ：
+  - 傳統寫法 `int mid = (left + right) / 2;` 在 `left + right` 超過 `INT_MAX` 時會導致**整數溢位 (Overflow)** 。
   - 更好的寫法是 `int mid = left + (right - left) / 2;`，可以在數學上確保數值不超出 `INT_MAX`。
 
 ---

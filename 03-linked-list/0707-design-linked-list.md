@@ -17,7 +17,7 @@
 * **輸入限制**：
   - $0 \le \text{index}, \text{val} \le 1000$
   - 所有操作函式的總呼叫次數不超過 `2000` 次。
-* **特殊狀況 (Edge Cases)**：
+* **特殊狀況 (Edge Cases)** ：
   - **空串列操作**：剛初始化（`size == 0`）時呼叫 `get(0)`、`deleteAtIndex(0)` 或 `addAtTail(val)`。
   - **邊界索引差異（極易出錯）**：
     - `addAtIndex` 的有效範圍是 `0 <= index <= size`（等於 `size` 代表插在尾端）。
@@ -37,7 +37,7 @@
 * **核心設計**：
   - 在節點結構中加入 `prev` 指標，並在初始化時建立頭尾兩個哨兵節點互相連接（`dummyhead <-> dummytail`），確保所有真實節點永遠夾在兩個哨兵之間，插入尾端時 `curr->next` 永遠指向 `dummytail` 而非 `nullptr`，免去空指標檢查。
   - **四條指標維護順序**：插入 `newnode` 時，先暫存 `tmp = curr->next`，接好 `newnode` 的前後指標（`newnode->next = tmp`、`newnode->prev = curr`），再更新左右鄰居的指標（`curr->next = newnode`、`tmp->prev = newnode`）。
-  - *(進階優化空間)*：在 `get` 與 `addAtIndex` 中可比較 `index` 與 `size / 2`，決定從 `dummyhead` 往後走或從 `dummytail` 往前走，將走訪步數減半；若直接操作 `dummyhead->next` 與 `dummytail->prev`，`addAtHead` 與 `addAtTail` 更可達到真正的 $O(1)$。
+  - **(進階優化空間)** ：在 `get` 與 `addAtIndex` 中可比較 `index` 與 `size / 2`，決定從 `dummyhead` 往後走或從 `dummytail` 往前走，將走訪步數減半；若直接操作 `dummyhead->next` 與 `dummytail->prev`，`addAtHead` 與 `addAtTail` 更可達到真正的 $O(1)$。
 
 ### 💡 觀念釐清：為什麼這題不能使用二分搜尋（Binary Search）？
 鏈結串列的底層記憶體特性與題目需求皆不符合二分搜尋的前提條件：
@@ -63,7 +63,7 @@
 ---
 
 ## 4. 易錯點與盲點總結 (Key Takeaways)
-* **`deleteAtIndex` 的邊界必須是 `index >= size`**：若誤寫成 `index > size`，當傳入 `index == size` 時，`curr` 會停在最後一個真實節點，`curr->next` 為 `nullptr`，接著執行 `curr->next->next` 或 `curr->next->prev` 會直接觸發空指標崩潰（Runtime Error）。
+* **`deleteAtIndex` 的邊界必須是 `index >= size`** ：若誤寫成 `index > size`，當傳入 `index == size` 時，`curr` 會停在最後一個真實節點，`curr->next` 為 `nullptr`，接著執行 `curr->next->next` 或 `curr->next->prev` 會直接觸發空指標崩潰（Runtime Error）。
 * **指標修改順序不可顛倒**：
   - 單向插入時，務必先執行 `newnode->next = curr->next;`，再執行 `curr->next = newnode;`，否則後方串列會斷鏈遺失。
   - 雙向插入時，務必先接好 `newnode` 的 `next` 與 `prev`（或先用 `tmp` 暫存 `curr->next`），再覆寫 `curr->next`。

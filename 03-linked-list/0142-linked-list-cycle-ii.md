@@ -57,7 +57,7 @@
 ---
 
 ## 4. 易錯點與盲點總結 (Key Takeaways)
-* **外層迴圈條件必須保護 `fast->next`**：第一階段推進指標時需執行 `fast = fast->next->next`，因此 `while` 條件必須寫成 `fast != nullptr && fast->next != nullptr`（利用短路求值先確認 `fast` 非空，再檢查 `fast->next`），避免無環串列在尾端觸發空指標崩潰。
+* **外層迴圈條件必須保護 `fast->next`** ：第一階段推進指標時需執行 `fast = fast->next->next`，因此 `while` 條件必須寫成 `fast != nullptr && fast->next != nullptr`（利用短路求值先確認 `fast` 非空，再檢查 `fast->next`），避免無環串列在尾端觸發空指標崩潰。
 * **切勿在未確認相遇前比較位址**：起始時 `fast` 與 `slow` 都初始化在 `head`，必須先各自移動一步後，再判斷 `if (fast == slow)`，否則一進入迴圈就會誤判為在 `head` 相遇。
 * **C++ 空指標語意規範**：一律使用 `nullptr` 取代 `NULL`，因 `NULL` 在 C++ 中本質為整數 `0`，而 `nullptr` 具備嚴格的指標型別安全（`std::nullptr_t`），可避免多載與型別推導歧義。
 

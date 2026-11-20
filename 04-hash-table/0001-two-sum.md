@@ -16,7 +16,7 @@
   - $2 \le \text{nums.length} \le 10^4$
   - $-10^9 \le \text{nums}[i] \le 10^9$
   - $-10^9 \le \text{target} \le 10^9$
-* **特殊狀況 (Edge Cases)**：
+* **特殊狀況 (Edge Cases)** ：
   - **負數與零**：元素與 `target` 皆可能為負數或 `0`（例如 `nums = [-3, 4, 3, 90]`, `target = 0`），因此無法使用固定範圍陣列作為直接定址表，必須使用動態雜湊表。
   - **數值重複但索引不同**：例如 `nums = [3, 3]`, `target = 6`，必須正確回傳 `[0, 1]`。
 
@@ -61,7 +61,7 @@
 * **「先查後存」的重要性**：切勿一開始就把整個 `nums` 全部塞進 `unordered_map`，否則當 `target = 2 * nums[i]` 時（例如 `nums = [3, 2, 4]`, `target = 6`），元素會查到自己而誤回傳 `[0, 0]`。邊走邊查、沒找到再存入，能天然保證不會重複使用同一個索引。
 * **C++ STL 迭代器（Iterator）與索引（Index）區分**：
   - 需取得元素位置編號時使用整數迴圈 `for (int i = 0; i < nums.size(); i++)`；`nums.begin()` 與 `nums.end()` 回傳的是指向記憶體位置的**迭代器**，不能指派給 `int`。
-  - `seen.find(key)` 回傳的是指向 `std::pair<const Key, Value>` 的迭代器（以 `auto it` 接收）；找不到時統一回傳 `seen.end()`，找到時透過 **`it->first`** 取得 Key（數值）、**`it->second`** 取得 Value（索引）。
+  - `seen.find(key)` 回傳的是指向 `std::pair<const Key, Value>` 的迭代器（以 `auto it` 接收）；找不到時統一回傳 `seen.end()`，找到時透過 **`it->first`** 取得 Key（數值）、 **`it->second`** 取得 Value（索引）。
 * **工程實務寫法習慣（C++ Code Review 標準）**：
   - 優先使用 `if (auto it = seen.find(complement); it != seen.end())` 搭配 `it->second`，而非 `if (seen.count(complement)) { return {seen[complement], i}; }`。前者僅需計算一次雜湊值且為純唯讀操作，可避免兩次雜湊查詢開銷，也能避開 `operator[]` 在鍵值不存在時意外自動插入預設節點的副作用。
 

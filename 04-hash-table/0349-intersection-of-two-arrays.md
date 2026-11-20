@@ -15,7 +15,7 @@
 * **輸入限制**：
   - $1 \le \text{nums1.length}, \text{nums2.length} \le 1000$
   - $0 \le \text{nums1}[i], \text{nums2}[i] \le 1000$
-* **特殊狀況 (Edge Cases)**：
+* **特殊狀況 (Edge Cases)** ：
   - 兩陣列完全沒有重疊元素：回傳空陣列 `{}`。
   - 兩陣列包含大量重複元素（例如 `nums1 = [2, 2, 2]`, `nums2 = [2, 2]`）：交集結果僅能輸出單一元素 `[2]`。
 
@@ -46,7 +46,7 @@
 
 ---
 
-## 4. 易錯點與盲點總結 (Key Takeaways)
+## 4. 易錯點與盲點 (Key Takeaways)
 * **為何不用 `vector<int>` 直接當查表清單**：將 `vector` 當作一般清單（`push_back` 存值）查詢需 $O(N)$ 且不會自動去重；除非將陣列索引視為 Key（即 Direct-Address Table，例如本題因數值範圍在 $0 \sim 1000$ 亦可開 `int hash[1001] = {0}`），否則大範圍整數一律優先使用 `unordered_set` 或 `unordered_map`。
 * **`std::unordered_set` 的自動去重機制**：不論是初始化 `unordered_set<int> s(v.begin(), v.end())` 還是執行 `s.insert(x)`，底層在插入前都會先計算雜湊值檢查該鍵值是否已存在，若已存在則直接忽略，天然保證集合內元素唯一。
 * **`.erase()` 技巧的適用場景**：當集合內的比對資料在「匹配成功一次後就不再需要」時，用 `set.erase(key)` 取代額外開一個 `result_set` 去重，是相當俐落的 C++ 空間優化慣用法。

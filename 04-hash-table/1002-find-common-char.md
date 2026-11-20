@@ -16,7 +16,7 @@
   - $1 \le \text{words.length} \le 100$。
   - $1 \le \text{words}[i].\text{length} \le 100$。
   - `words[i]` 僅包含小寫英文字母（`'a'` 到 `'z'`）。
-* **特殊狀況 (Edge Cases)**：
+* **特殊狀況 (Edge Cases)** ：
   - `words` 僅包含一個字串（`words.size() == 1`）：直接回傳該字串拆解出的所有字元。
   - 所有字串之間完全沒有任何交集字元：回傳空的 `vector<string>`（`{}`）。
 
@@ -42,9 +42,46 @@
 
 ---
 
-## 4. 易錯點與盲點總結 (Key Takeaways)
+## 4. 易錯點與盲點 (Key Takeaways)
 * **局部統計陣列 `count2[26]` 必須在每輪迴圈內重新初始化歸零**：切勿將 `int count2[26] = {0};` 宣告在外層 `for` 迴圈之外，否則上一輪字串的字元計數會殘留並持續累加，導致交集頻率高估誤判。
 * **為何本題用 `int arr[26]` 優於 `std::unordered_map<char, int>`**：
   - 在資料結構定義上，`int arr[26]` 屬於**直接定址表（Direct-Address Table）**（可視為無雜湊碰撞、映射函數為 `ch - 'a'` 的特例雜湊表），在記憶體中連續配置且零雜湊計算開銷。
   - 在「取最小值」步驟中，固定 26 格陣列對於未出現的字母天然保有預設值 `0`，可直接用統一的 26 次迴圈完成歸零；若用 `unordered_map` 則需額外處理「舊 Key 在新字串中不存在」的缺失邊界，寫法較繁瑣且易出錯。
 * **`char` 轉 `std::string` 寫法**：C++ 無法直接將 `char` 隱式轉型推入 `vector<string>`，需使用 `std::string` 的填滿建構子 `string(1, i + 'a')`（或直接 `result.emplace_back(1, i + 'a')`）建立單字元字串。
+
+---
+
+## 5. 程式碼實作 (C++)
+
+```cpp
+class Solution {
+public:
+    vector<string> commonChars(vector<string>& words) {
+        vector<string> result;
+        if(words.size() == 0) return result;
+
+        int count[26] = {0};
+        for(int i = 0; i < words[0].length(); i++){ //the first string
+            count[words[0][i] - 'a']++;
+        }
+        for(int i = 1; i < words.size(); i++){
+            int count2[26] = {0};
+
+            for(int j = 0; j < words[i].length(); j++){
+                count2[words[i][j] - 'a']++;
+            }
+            for(int j = 0; j < 26; j++){
+                count[j] = min(count[j], count2[j]);
+            }
+        }
+        for(int i = 0; i < 26; i++){
+            while(count[i] > 0){ //if 2 than output 2 times
+                string str(1, i + 'a'); //char -> str
+                result.push_back(str);
+                count[i]--;
+            }
+        }
+        return result;
+    }
+};
+```
