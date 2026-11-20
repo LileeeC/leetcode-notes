@@ -74,12 +74,12 @@ class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
         // Key: 數字的值 (nums[i]), Value: 該數字的索引 (i)
-        std::unordered_map<int, int> seen;
+        unordered_map<int, int> seen;
 
         for (int i = 0; i < nums.size(); i++) {
             int complement = target - nums[i];
 
-            // 單次雜湊查詢（C++17 if 初始化語句），只查詢先前已走訪的元素
+            // 單次雜湊查詢，只查詢先前已走訪的元素
             if (auto it = seen.find(complement); it != seen.end()) {
                 return {it->second, i};
             }
